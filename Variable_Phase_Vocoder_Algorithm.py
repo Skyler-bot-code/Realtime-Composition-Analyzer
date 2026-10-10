@@ -1,5 +1,3 @@
-## Type 2. Phase Vocoder (looks for beats)
-# A phase vocoder is a time-domain technique that allows for independent control of time and frequency.
 import numpy as np
 from scipy.interpolate import interp1d
 from Main_Pipeline import Alignment
@@ -18,142 +16,54 @@ class Variable_phasevocoder(Alignment):
             hop_size=512,
             fft_size=2048):
 
-        """
-        Initialize the phase vocoder.
-
-        Parameters
-        ----------
-        magnitude:
-            STFT magnitude matrix
-
-            Shape:
-            (number_of_frames, fft_bins)
-
-
-        phase:
-            STFT phase matrix
-
-            Shape:
-            (number_of_frames, fft_bins)
-
-
-        warp_curve:
-            T(t)
-
-            Maps original time -> stretched time
-
-
-        t_dense:
-            Time values corresponding to warp_curve
-
-
-        sample_rate:
-            Audio sampling frequency
-
-
-        hop_size:
-            Distance between STFT frames
-
-
-        fft_size:
-            FFT size
-        """
-
 
         # Store STFT magnitude
         self.mag = magnitude
 
-
         # Store original STFT phase
         self.phase = phase
-
 
         # Store time warping function T(t)
         self.warp_curve = warp_curve
 
-
         # Store original time axis
         self.t_dense = t_dense
 
-
         # Audio sample rate
         self.sr = sample_rate
-
 
         # STFT parameters
         self.H = hop_size
         self.N = fft_size
 
-
         # Number of frequency bins
         self.num_bins = magnitude.shape[1]
-
 
     # Create frame level time mapping (Converting seconds to frames)
     def create_analysis_times(self):
 
-        """
-        Create the input frame location for every
-        output frame.
-
-        Output:
-        
-        analysis_times[i]
-
-        means:
-
-        "For output frame i,
-         read from this fractional input frame."
-        """
-
-
         # Time distance between STFT frames
         frame_time = self.H / self.sr
 
-
         # Total stretched duration
         output_duration = self.warp_curve[-1]
-
 
         # Number of output frames after stretching
         num_output_frames = int(
             output_duration / frame_time
         )
 
-
         # Generate output frame timestamps
-        output_times = np.arange(
-            num_output_frames
-        ) * frame_time
+        output_times = np.arange(num_output_frames) * frame_time
 
-
-
-        # We currently have:
-        #
-        # original time --> warped time
-        #
-        # Need inverse:
-        #
         # warped time --> original time
-        #
-        inverse_warp = interp1d(
-            self.warp_curve,
-            self.t_dense,
-            fill_value="extrapolate"
-        )
-
+        inverse_warp = interp1d(self.warp_curve, self.t_dense, fill_value="extrapolate")
 
         # Find original time for every output frame
-        original_times = inverse_warp(
-            output_times
-        )
-
-
+        original_times = inverse_warp(output_times)
 
         # Convert seconds into STFT frame indexes
-        self.analysis_times = (
-            original_times / frame_time
-        )
+        self.analysis_times = (original_times / frame_time)
 
     # Magnitude interpolation 
     def interpolate_magnitude(self):
@@ -163,7 +73,6 @@ class Variable_phasevocoder(Alignment):
         at fractional frame positions.
         """
 
-
         output_mag = []
 
 
@@ -171,51 +80,20 @@ class Variable_phasevocoder(Alignment):
 
             position = np.clip(position, 0, self.mag.shape[0] - 1) # prevent out of bound
 
-
             # Left neighboring frame
-            left = int(
-                np.floor(position)
-            )
-
+            left = int(np.floor(position))
 
             # Right neighboring frame
-            right = min(
-                left + 1,
-                self.mag.shape[0]-1
-            )
-
+            right = min(left + 1, self.mag.shape[0]-1)
 
             # Fraction between frames
             alpha = position - left
 
+            magnitude = ((1-alpha) * self.mag[left] + alpha * self.mag[right])
+            output_mag.append(magnitude)
 
 
-            # Linear interpolation
-            #
-            # Example:
-            #
-            # position = 10.3
-            #
-            # 70% frame 10
-            # 30% frame 11
-
-            magnitude = (
-                (1-alpha) * self.mag[left]
-                +
-                alpha * self.mag[right]
-            )
-
-
-            output_mag.append(
-                magnitude
-            )
-
-
-
-        self.output_mag = np.array(
-            output_mag
-        )
-
+        self.output_mag = np.array(output_mag)
 
     def propagate_phase(self):
 
@@ -224,103 +102,50 @@ class Variable_phasevocoder(Alignment):
         while preserving frequency continuity.
         """
 
-
         # Create output phase container
 
-        output_phase = np.zeros_like(
-            self.output_mag
-        )
-
+        output_phase = np.zeros_like(self.output_mag)
 
         # First frame keeps original phase
 
         output_phase[0] = self.phase[0]
 
-
-
         # Frequency of every FFT bin
 
-        omega = (
-            2*np.pi
-            *
-            np.arange(self.num_bins)
-            /
-            self.N
-        )
+        omega = (2*np.pi*np.arange(self.num_bins)/self.N)
 
-
-
-        for i in range(
-            1,
-            len(self.analysis_times)
-        ):
-
-
+        for i in range(1, len(self.analysis_times)):
             # Current fractional frame
 
             # Bug fixed: no bounds clipping 
             current = np.clip(self.analysis_times[i], 0, self.mag.shape[0] - 1)
-            
             previous = np.clip(self.analysis_times[i - 1], 0, self.mag.shape[0] - 1)
 
-
-
             # Find neighboring frames
-
-            prev_frame = int(
-                np.floor(previous)
-            )
-
-            curr_frame = int(
-                np.floor(current)
-            )
+            prev_frame = int(np.floor(previous))
+            curr_frame = int(np.floor(current))
 
 
             # Original phase difference
-
-            delta_phase = (
-                self.phase[curr_frame]
-                -
-                self.phase[prev_frame]
-            )
-
+            delta_phase = (self.phase[curr_frame] - self.phase[prev_frame])
 
             # Bug fixed:
             frame_diff = curr_frame - prev_frame
 
-
             # Remove expected FFT rotation
-
-            delta_phase -= (
-                omega * self.H * frame_diff
-            )
+            delta_phase -= (omega * self.H * frame_diff)
 
 
 
             # Wrap phase to [-pi, pi]
-
-            delta_phase = (
-                (delta_phase + np.pi) % (2 * np.pi) - np.pi)
-
+            delta_phase = ((delta_phase + np.pi) % (2 * np.pi) - np.pi)
 
 
             # Restore true movement
-
-            true_increment = (
-                omega * self.H * frame_diff + delta_phase
-            )
-
-
+            true_increment = (omega * self.H * frame_diff + delta_phase)
 
             # Accumulate phase
-
-            output_phase[i] = (
-                output_phase[i-1]
-                +
-                true_increment
-            )
-
-
+            output_phase[i] = (output_phase[i-1] + true_increment)
 
         self.output_phase = output_phase
 
@@ -332,14 +157,7 @@ class Variable_phasevocoder(Alignment):
         into complex FFT values.
         """
 
-
-        self.complex_spec = (
-            self.output_mag
-            *
-            np.exp(
-                1j*self.output_phase
-            )
-        )
+        self.complex_spec = (self.output_mag * np.exp(1j*self.output_phase))
 
     # Inverse STFT
     def inverse_stft(self, window):
@@ -350,58 +168,29 @@ class Variable_phasevocoder(Alignment):
         """
 
 
-        num_frames = (
-            self.complex_spec.shape[0]
-        )
+        num_frames = (self.complex_spec.shape[0])
 
 
         # Output length calculation
 
-        output_length = (
-            (num_frames-1)
-            *
-            self.H
-            +
-            self.N
-        )
+        output_length = ((num_frames-1) * self.H + self.N)
 
-
-        output = np.zeros(
-            output_length
-        )
-
-
+        output = np.zeros(output_length)
 
         for i in range(num_frames):
 
-
             # Convert spectrum -> waveform
 
-            frame = np.fft.irfft(
-                self.complex_spec[i],
-                n=self.N
-            )
-
+            frame = np.fft.irfft(self.complex_spec[i], n=self.N)
 
             # Apply window
-
             frame *= window
 
-
-
             # Location in output
-
             start = i*self.H
 
-
-
             # Overlap add
-
-            output[
-                start:start+self.N
-            ] += frame
-
-
+            output[start:start+self.N] += frame
 
         return output
     
@@ -421,71 +210,31 @@ class Variable_phasevocoder(Alignment):
         Complete variable phase vocoder pipeline.
         """
 
-
-        # Step 1:
-        # Continuous T(t)
-        # ->
-        # frame mapping
+        # Step 1: Continuous T(t) -> frame mapping
 
         self.create_analysis_times()
 
-
-
-        # Step 2:
-        # interpolate magnitude
+        # Step 2: interpolate magnitude
 
         self.interpolate_magnitude()
 
-
-
-        # Step 3:
-        # propagate phase
+        # Step 3: propagate phase
 
         self.propagate_phase()
 
 
-
-        # Step 4:
-        # create complex STFT
+        # Step 4: create complex STFT
 
         self.build_spectrum()
 
+        # Step 5: reconstruct waveform
 
-
-        # Step 5:
-        # reconstruct waveform
-
-        audio_A_phase_vocoder = self.inverse_stft(
-            window
-        )
-
+        audio_A_phase_vocoder = self.inverse_stft(window)
 
         return audio_A_phase_vocoder
     
 
     def transient_mask_from_vocoder(vocoder, alpha=2.0, hold_ms=30):
-        """
-        Computes a proper spectral-flux transient mask from the phase vocoder's
-        interpolated magnitude spectra (output_mag), BEFORE any reduction to
-        peak-frequency-per-frame happens.
-
-        Parameters
-        ----------
-        vocoder : Variable_phasevocoder
-            Must have .process_magnitudes_only() called, or .process() already run
-            (either way, self.output_mag must exist as shape (frames, bins)).
-        alpha : float
-            Threshold sensitivity (higher = fewer frames flagged as transient).
-        hold_ms : float
-            Minimum duration a transient stays flagged, to avoid flicker.
-
-        Returns
-        -------
-        final_mask : np.ndarray, shape (frames,)
-            1 = transient frame, 0 = steady frame.
-        sf : np.ndarray, shape (frames,)
-            Raw spectral flux value per frame (for inspection/debugging).
-        """
 
         # 1. Make sure output_mag exists and is (frames, bins)
         if not hasattr(vocoder, "output_mag"):

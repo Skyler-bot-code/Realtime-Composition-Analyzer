@@ -2,25 +2,25 @@ from Main_Pipeline import Alignment
 import numpy as np
 import librosa
 from scipy import ndimage
-
-
-"""Digital Signal Processing Algorithm (DSP)"""
-# This algorithm focuses on manipulating the digital signal directly for time-stretching and pitch-shifting.
-
-
-## Type 1. Granular Synthesis
-# Granular synthesis involves breaking the audio into small grains and manipulating their playback.
-
-
-
-# Repeating grains (small pieces of sound) to stretch the audio without changing the pitch.
-# Jumping (Stretching) from a pitch of 0.9 to -0.8 creates a strong click sound, which we don't want 
-
-# Solution for jumping: We overlap 
-
-# grain_size = every something frequency 
-
 from scipy.interpolate import interp1d
+
+
+"""
+Digital Signal Processing Algorithm - Granular Synthesis
+
+This algorithm implements granular synthesis for time-stretching and pitch-shifting audio signals.
+
+Granular synthesis involves breaking the audio into small grains and manipulating their playback.
+
+Problem it solves: 
+1. Repeating grains (small pieces of sound) to stretch the audio without changing the pitch.
+2. Jumping (Stretching) from a pitch of 0.9 to -0.8 creates a strong click sound, which we don't want 
+
+Solution:
+Overlap each frames 
+
+"""
+
 
 class Granular_synthesis(Alignment):
 
@@ -68,8 +68,8 @@ class Granular_synthesis(Alignment):
             ratio = max(0.25, min(float(self.warp_curve(current_time)), 4.0))
 
 
-            # FIX 2: floor derived from grain_size/analysis_hop, not a fixed 0.25
-            # ensures synthesis_hop never exceeds grain_size (no gap dropouts)
+            # Floor derived from grain_size/analysis_hop, not a fixed 0.25
+            # Ensures synthesis_hop never exceeds grain_size (no gap dropouts)
             ratio = max(analysis_hop / grain_size, min(ratio, 4.0))
 
             synthesis_hop = max(64, int(analysis_hop / ratio))
@@ -114,7 +114,7 @@ class Granular_synthesis(Alignment):
         last_sample = nonzero.max() + 1
         audio_A_granular = output[:last_sample]
 
-        # store so transient_mask_from_granular can read them off self
+        # Store so transient_mask_from_granular can read them off self
         self.audio_A_granular = audio_A_granular
 
         return audio_A_granular, sr
@@ -132,7 +132,7 @@ class Granular_synthesis(Alignment):
 
         stft = np.abs(librosa.stft(audio_A_granular, n_fft=n_fft, hop_length=hop_length))  # shape: (bins, frames)
 
-        sf = np.sum(np.maximum(0, np.diff(stft, axis=1)), axis=0)   # axis=1 is the frame axis here
+        sf = np.sum(np.maximum(0, np.diff(stft, axis=1)), axis=0)   # axis=1 represents the frame axis 
         sf = np.pad(sf, (1, 0), mode='edge')
 
         win_len = 15

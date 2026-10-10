@@ -1,0 +1,391 @@
+# Below function is for making sure starting at the same pace
+
+
+# First approach 
+# 1. - use ratio of time of entire to time between notes 
+# 2. - use ratio between the time of one 小節 to the number of beats for 4/4 6/8 2/4 ...etc
+# 3. find the frequency points over time on a graph
+# 4. Use symbolic regression to find the curve on a graph
+# 5. Use calculus to find the relative min and max
+# 6. - do some relationship (maybe mathematical function, infinite series functions) between step 2 and 5.
+# 7. return to the model a ratio (that comes from a result from step 6)
+# 8.  - do a mathematical function or AI learning model (Open AI or others) for changing the time and adding the pace
+# 8 -1, if faster, then stretch the frequencies points over time (make-it-similar model)
+# 8 -2, if slower, then shrink the frequencies points over time (make-it-similar model)
+
+
+# Second approach
+# Directly use infinite sequences to find the pattern
+# - For each group (A, B)
+# - Group 1: Sudden sound like (drums) #Amplitude: when a string was plucked, struck, or heavily bowed [onset detection], Amplitude Transient or Energy Onset [onset detection]
+# - Group 2: Base frequency like (Strings) # Frequency: what note is being played, Pitch Shift, Fundamental Frequency Transition, or a spike in Spectral Flux.
+# - Compare: position and determine the pace through some kind of ratio (step 4 to 8)
+
+# Combining approach first and second 
+
+
+# Group 1
+
+# Prototype 1 (RAW)
+""" 
+# First, identify the strong notes (Higher RMS amplitude)
+timesA, rms_list_A_raw = importer_A.detect_rms()
+timesB, rms_list_B_raw = importer_B.detect_rms()
+
+# Detech notes using onset !!
+rms_list_A = []
+rms_list_B = []
+
+# Importer A
+onset_framesA = librosa.onset.onset_detect(
+    y=importer_A.audio,
+    sr=importer_A.sr
+)
+
+rms_list_A = librosa.frames_to_time(
+    onset_framesA,
+    sr=importer_A.sr
+)
+
+# Importer B
+onset_framesB = librosa.onset.onset_detect(
+    y=importer_B.audio,
+    sr=importer_B.sr
+)
+
+rms_list_B = librosa.frames_to_time(
+    onset_framesB,
+    sr=importer_B.sr
+)
+# rms_list_A is a list that tells you where the beats (notes) are at 
+print(rms_list_A)
+
+# rms_list_A is a list that tells you where the beats (notes) are at 
+print(rms_list_B)
+
+
+
+# Get the inteval sequences for A and B !!
+terms_A = []
+terms_B = []
+for i in range(onset_times_A):
+    element_A = rms_list_A[i+1] - rms_list_A[i]
+    terms_A[i] = element_A
+    i+=1
+
+for i in range(rms_list_B):
+    element_B = rms_list_B[i+1] - rms_list_B[i]
+    terms_B[i] = element_B
+    i+=1
+
+# Compare sequences to find pace ratio and perform DTW !!
+pace = []
+
+
+for n in 
+    ratio = timesA[n] / timesB[n]
+
+
+    
+elif ratio < 1:
+    
+else:
+    """
+
+# Prototype 2 (RAW -> REVISED)
+# ----------------------------
+# Detect note onsets
+# ----------------------------
+
+
+
+
+# Step 1 -> pYIN algorithm: Separate fundemental frequencies
+# Step 1 -> Onset Detection: detect any frequency spikes so I know where the beats (notes) are
+# Step 2 -> DTW wrapping, Aligns the note correctly, doesn't stretch yet, it only maps it on a separate graph 
+# DTW is a machine learning model/algorithm that uses cost function (need to learn more about this)
+# Step 2 -> Find the ratio between each note using time interval audio A / audio B
+# Step 3 -> cubic spline interpolation to make smooth curves between each note
+# Step 4 -> Non-linear time-stretching (on the actual audio) (Step 2 DTW is the map)
+# 
+
+
+
+
+# Prototype 1 for comparison model (Time series analysis using DTW)
+
+
+"""
+# 1. Stack your multiple parameters together to create a Multivariate Array
+# Shape becomes: (2 features, N time steps)
+features_A = np.vstack([importer_A.frequencies, importer_A.rms_amplitudes])
+features_B = np.vstack([importer_B.frequencies, importer_B.rms_amplitudes])
+
+# 2. Use DTW to compare the multivariate matrices
+# 'metric=cosine' or 'euclidean' evaluates the multidimensional distance
+D, wp = librosa.sequence.dtw(X=features_A, Y=features_B, metric='cosine')
+
+# 3. Calculate a normalized distance score (Closer to 0 means identical)
+distance_score = D[-1, -1] / len(wp)
+print(f"Distance Score: {distance_score:.4f}")
+
+
+"""
+# write a model that makes both audio track comparable
+# 1. Start from equal frequency and amplitude pitch
+# 2. Play speed will also be different
+# - use ratio of time of entire to time between notes 
+# - Time between notes: 
+
+
+
+# stretch_rms_ampliitude in main_pipeline.py
+
+"""
+        Maps the ORIGINAL rms amplitude envelope onto the STRETCHED timeline,
+        using the same warp_curve inversion as create_analysis_times().
+
+        Parameters
+        ----------
+        rms_original : np.ndarray
+            RMS amplitude per frame, computed on the ORIGINAL (pre-stretch) audio,
+            e.g. from importer_A.detect_pitch() / detect_rms(), at hop_length granularity.
+        warp_curve : np.ndarray
+            T(t): maps original time -> stretched time.
+        t_dense : np.ndarray
+            Original time axis paired with warp_curve.
+        sr : int
+            Sample rate.
+        hop_length : int
+            Hop length used for the ORIGINAL rms_original array's frame spacing.
+
+        Returns
+        -------
+        stretched_rms : np.ndarray
+            RMS amplitude resampled onto the stretched timeline, one value per
+            output frame -- same length/timing convention as output_mag.
+        """
+
+
+
+# Granular + phase vocoder analysis architecture: 
+
+
+
+
+
+    
+    # also need stretched amplitude 
+    
+
+    # warp curve is not returned as a frequency
+    # warp curve passes in granular and phase vocoder respectively
+    # granular and phase vocoder stretch the aligned audio A respectively and passes out frequency list?
+
+
+# The above code gives time -> ratio
+# WSOLA wants input time -> output time.
+
+
+# statistical analysis on flaws of cubic spline interpolation (like overshooting, undershooting, etc.)
+
+
+# Continuous ratio curve
+
+#Integrate ratio curve 
+
+
+# Step 4: Time-warp function (Actual audio instruction for stretching algorithms) This function gives the location.
+
+# Solving challenge of tempo speeding up, pitch shifts higher
+## Short time fast fourier transform 
+## Waveform Similarity Overlap-Add - Time-Domain Method
+
+
+
+# Step 4: Actual stretching algorithms (Time-Scale Modification (TSM)
+# TSM techniques aim to change the speed of audio without affecting its pitch.
+
+
+# Granular - stretched audio A
+# Phase_vocoder - stretched audio A
+
+# Audio - B
+
+
+# Two aspects of comparison:
+# 1. Compare the stretched audio A with audio B on whether they have the same spike, same time for a certain frequency, and return the time from the original audio A
+# 2. Compare original audio A with a 調音器 (Tuner) to see the frequency accuracy and return the original time for that certain note
+
+# Print out the most detected frequency and the time section from the original audio A (before stretching) and audio B
+
+
+## 1. Construct a piece-wise function on determining to use either granular or phase vocoder
+# Transient-Aware Hybrid TSM
+### 1. 
+# Look for energy shifts (SF)between notes
+
+
+### 2. Adaptive dynamic threshold using moving median and a std over short sliding window 
+
+### 3. Compute the piece wise function 
+# for phase vocoder - SF ~= 0 
+# for granular - SF >> 0
+
+# Granular - audio_A_granular
+# Phase vocoder - audio_A_phase_vocoder
+# Base of audio A is phase_vocoder, uses granular for specific peaks, beats
+
+
+
+
+#######
+#Call Phase vocoder, and granular (ready for transient)
+# Undergo transient and form a single list that uses either which one to get to frequency
+# The frequency will be a frequency list, and then compare that to Audio B (Online audio)
+# Get in tune_noter
+# See the emphasis (use percentage and emphasis)
+# And user interface 
+
+
+
+
+# Online_audio.py
+
+#YouTube
+#   ↓
+#yt-dlp
+#   ↓
+#WAV file
+#   ↓
+#librosa
+#   ↓
+#frequency, time, amplitude detection (From class AudioImporter)
+
+
+
+
+
+
+
+# Ptich_analysis
+
+    # ------------------------------------------------------------
+    # Called LAST, after the hybrid mask has decided granular vs
+    # phase-vocoder per frame and those decisions have been mapped
+    # back to ORIGINAL (pre-stretch) time via
+    # Compute_optimize_hybrid_mask.align_decisions_to_original_time().
+    #
+    # Returns each decision frame's ORIGINAL timestamp and ORIGINAL
+    # frequency (as detected before any stretching).
+    # ------------------------------------------------------------
+
+
+
+
+
+
+
+# Statistical_Validation_Algorithm
+
+#[ Step 1 Validation ] ──> [ Step 2 Validation ] ──> [ Step 3 Validation ] ──> [ Step 4 Validation ]
+# Onset Precision/F1        DTW Path MAE & Cost       Spline Cross-Val (RMSE)    Log-Spectral Distance
+
+
+# For step 1 and 3, try using Cubic Spline Interpolation has its own formal Error Bounding Theorem
+
+# This theorem validates three critical assumptions in your engineering pipeline:
+# Step 1 Quality (Sampling Density): It proves whether your note detector found enough timestamp markers ($T_A, T_B$) to safely reconstruct the performance timeline.
+# Step 3 Stability (Mathematical Fidelity): It proves that your continuous Cubic Spline curve $S(t)$ doesn't wiggle, overshoot, or oscillate unrealistically (Runge's phenomenon) between two far-apart notes.
+# Audio Quality (Psychoacoustic Safety): It proves that the mathematical error between your interpolated curve and the performer's actual continuous pace stays below $10\text{ ms}$—the threshold at which the human ear begins to detect timing artifacts.
+
+
+
+
+
+# Variable Phase Vocoder:
+
+"""
+Initialize the phase vocoder.
+
+Parameters
+----------
+magnitude:
+    STFT magnitude matrix
+
+    Shape:
+    (number_of_frames, fft_bins)
+
+
+phase:
+    STFT phase matrix
+
+    Shape:
+    (number_of_frames, fft_bins)
+
+
+warp_curve:
+    T(t)
+
+    Maps original time -> stretched time
+
+
+t_dense:
+    Time values corresponding to warp_curve
+
+
+sample_rate:
+    Audio sampling frequency
+
+
+hop_size:
+    Distance between STFT frames
+
+
+fft_size:
+    FFT size
+"""
+
+
+
+# Variable_Phase_Vocoder_Algorithm.py - create_analysis_times:
+
+"""
+Create the input frame location for every
+output frame.
+
+Output:
+
+analysis_times[i]
+
+means:
+
+"For output frame i,
+    read from this fractional input frame."
+"""
+
+
+# Variable_Phase_Vocoder_Algorithm.py - transient mask from vocoder
+
+"""
+Computes a proper spectral-flux transient mask from the phase vocoder's
+interpolated magnitude spectra (output_mag), before any reduction to
+peak-frequency-per-frame happens.
+
+Parameters
+----------
+vocoder : Variable_phasevocoder
+    Must have .process_magnitudes_only() called, or .process() already run
+    (either way, self.output_mag must exist as shape (frames, bins)).
+alpha : float
+    Threshold sensitivity (higher = fewer frames flagged as transient).
+hold_ms : float
+    Minimum duration a transient stays flagged, to avoid flicker.
+
+Returns
+-------
+final_mask : np.ndarray, shape (frames,)
+    1 = transient frame, 0 = steady frame.
+sf : np.ndarray, shape (frames,)
+    Raw spectral flux value per frame (for inspection/debugging).
+"""

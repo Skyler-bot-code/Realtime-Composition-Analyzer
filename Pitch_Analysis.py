@@ -1,7 +1,7 @@
-# This is to make a 調音器 (Tuner)
-
 import math
 import numpy as np
+from Import_Audio import AudioImporter
+
 
 standard_A4 = 440.0  # Standard frequency for note A4 in Hz
 
@@ -70,15 +70,7 @@ class Intonation_Analysis:
 
             j += count + 1
 
-    # ------------------------------------------------------------
-    # Called LAST, after the hybrid mask has decided granular vs
-    # phase-vocoder per frame and those decisions have been mapped
-    # back to ORIGINAL (pre-stretch) time via
-    # Compute_optimize_hybrid_mask.align_decisions_to_original_time().
-    #
-    # Returns each decision frame's ORIGINAL timestamp and ORIGINAL
-    # frequency (as detected before any stretching).
-    # ------------------------------------------------------------
+
     def analyze_aligned_decisions(self, aligned, original_times, original_frequencies):
         """
         Parameters
@@ -115,7 +107,6 @@ class Intonation_Analysis:
 
 if __name__ == "__main__":
     # Standalone test only — does NOT run on import
-    from Audio_Importer import AudioImporter
 
     audio = AudioImporter("/Users/skyler/Desktop/EE + Cello project/cold-percussion-mix.wav")
     audio.load_audio()

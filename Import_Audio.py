@@ -2,14 +2,26 @@ import librosa as lr
 import numpy as np
 
 
+"""
+AudioImporter is a class to detect pitch, time-frequency, and RMS amplitude of an audio file. 
+These features are used in further analysis in:
+    1. Pitch_Analysis.py
+    2. Variable_Phase_Vocoder_Algorithm.py
+    3. Granular_Synthesis_Algorithm.py
+    4. Adapative_STFT_Algorithm.py
+
+
+"""
+
+
 class AudioImporter:
 
     def __init__(self, file):
         self.file = file
 
         # Settings
-        self.window_size = 2048 # based on this industrial standard window size, make a STFT model (ML_STFT_parameter.py)
-        self.hop_size = 512 # based on this industrial standard hop size, make a STFT model (ML_STFT_parameter.py)
+        self.window_size = 2048 # based on this industrial standard window size, make a STFT model (Adapative_STFT_Algorithm.py)
+        self.hop_size = 512 # based on this industrial standard hop size, make a STFT model (Adaptive_STFT_Algorithm.py)
 
         self.audio = None
         self.sr = None

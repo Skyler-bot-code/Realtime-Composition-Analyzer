@@ -1,9 +1,9 @@
 
-from Audio_Importer import AudioImporter
+from Import_Audio import AudioImporter
 
-# -----------------------------
-# Run the program from computer (Analysis from class AudioImporter)
-# -----------------------------
+"""
+Load local audio (Analysis from class AudioImporter)
+"""
 
 file = "/Users/skyler/Desktop/EE + Cello project/cold-percussion-mix.wav"
 

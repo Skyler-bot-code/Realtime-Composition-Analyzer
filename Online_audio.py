@@ -1,9 +1,8 @@
 import yt_dlp
-from Audio_Importer import AudioImporter
+from Import_Audio import AudioImporter
 
-# Steps of how to install ffmpeg and ffmprobe on python
 """
-How to install ffmpeg and ffmprobe on python:
+Steps to install ffmpeg and ffmprobe on python:
 1. python3 -m pip install -U yt-dlp #Install yt-dlp
 2. python3 -m yt_dlp --version # Check for version
 3. Download ffmpeg and ffprobe from online
@@ -32,10 +31,6 @@ with yt_dlp.YoutubeDL(ydl_opts) as ydl:
     ydl.download([url])
 
 
-# write the model to allow multiple online audio 疊加 analysis 
-
-
-
 
 wav_path = "/Users/skyler/Desktop/audio.wav"
 
@@ -44,16 +39,3 @@ audio_file = AudioImporter(wav_path)
 audio_file.load_audio()
 
 times, frequencies, peak_amplitudes, rms_amplitudes = audio_file.detect_pitch()
-
-
-
-
-#YouTube
-#   ↓
-#yt-dlp
-#   ↓
-#WAV file
-#   ↓
-#librosa
-#   ↓
-#frequency, time, amplitude detection (From class AudioImporter)

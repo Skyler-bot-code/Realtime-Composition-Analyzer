@@ -30,10 +30,10 @@ class stats_validate:
         # Inter-Onset Interval (IOI) value for multimodability test and outlier filtering 
 
     
-from Two_Data_Comparison_ML import onset_stats # Onset accuracy evaluation 
+from Main_Pipeline import onset_stats # Onset accuracy evaluation 
 onset_result = print(onset_stats)
 
-from Two_Data_Comparison_ML import calculate_rse # DTW alignment accuracy 
+from Main_Pipeline import calculate_rse # DTW alignment accuracy 
 DTW_result = print(calculate_rse)
 
 

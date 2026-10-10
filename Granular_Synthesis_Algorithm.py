@@ -1,4 +1,4 @@
-from Two_Data_Comparison_ML import Alignment
+from Main_Pipeline import Alignment
 import numpy as np
 import librosa
 from scipy import ndimage

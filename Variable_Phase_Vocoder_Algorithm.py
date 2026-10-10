@@ -2,7 +2,7 @@
 # A phase vocoder is a time-domain technique that allows for independent control of time and frequency.
 import numpy as np
 from scipy.interpolate import interp1d
-from Two_Data_Comparison_ML import Alignment
+from Main_Pipeline import Alignment
 from scipy import ndimage
 
 

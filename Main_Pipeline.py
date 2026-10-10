@@ -121,12 +121,12 @@ from scipy.integrate import cumulative_trapezoid
 from collections import deque
 import soundfile as sf
 from scipy.interpolate import interp1d
-from tune_noter import Intonation_Analysis
+from Pitch_Analysis import Intonation_Analysis
 import scipy.ndimage as ndimage
 import librosa
-from phase_vocoder import Variable_phasevocoder
-from granular import Granular_synthesis
-from tune_noter import Intonation_Analysis
+from Variable_Phase_Vocoder_Algorithm import Variable_phasevocoder
+from Granular_Synthesis_Algorithm import Granular_synthesis
+from Pitch_Analysis import Intonation_Analysis
 
 
 

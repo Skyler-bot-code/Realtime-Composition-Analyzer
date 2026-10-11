@@ -15,7 +15,6 @@ import scipy.ndimage as ndimage
 import librosa
 from Variable_Phase_Vocoder_Algorithm import Variable_phasevocoder
 from Granular_Synthesis_Algorithm import Granular_synthesis
-from Pitch_Analysis import Intonation_Analysis
 
 
 # Use Multivariate Dynamic Time Warping (DTW) 
@@ -535,9 +534,10 @@ aligned = Compute_optimize_hybrid_mask.align_decisions_to_original_time(
 )
 
 # --- Tune noter: LAST step, reports ORIGINAL time + ORIGINAL frequency ---
+standard_A4 = 440.0
 tuner = Intonation_Analysis(standard_A4)
 tuned_report = tuner.analyze_aligned_decisions(
-    aligned, importer_A_times, importer_A_frequencies
+    aligned, times_A, frequencies_A
 )
 
 for row in tuned_report[:10]:

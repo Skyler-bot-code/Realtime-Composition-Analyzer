@@ -1,96 +1,9 @@
 <mxfile host="app.diagrams.net">
-  <diagram name="第 1 页" id="jPSLZiU6QF3XoelPDRsZ">
-    <mxGraphModel dx="846" dy="529" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+  <diagram name="第 1 页" id="-76WrrveZzbDc9N7f_Dh">
+    <mxGraphModel>
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="S5wem8K1ONvBrwTmuS2g-1" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="User input audio (url)" vertex="1">
-          <mxGeometry height="80" width="80" x="374" y="30" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-1" edge="1" parent="1" source="S5wem8K1ONvBrwTmuS2g-1" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="390" y="350" as="sourcePoint" />
-            <mxPoint x="414" y="150" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-5" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Align the two audio&amp;nbsp;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;1. Same start time&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;2. Same time for the notes&lt;/font&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="60" width="120" x="354" y="250" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-9" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Determine which algorithm&lt;div&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;1. Amplitude&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 8px;&quot;&gt;2. Transient&amp;nbsp;&lt;/font&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="80" width="80" x="374" y="380" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-10" edge="1" parent="1" source="7JE1k5dMQ-xVDfsQ_TVP-9" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="414" y="390" as="sourcePoint" />
-            <mxPoint x="414" y="460" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-11" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="320" y="350" as="sourcePoint" />
-            <mxPoint x="370" y="390" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-12" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="320" y="430" as="sourcePoint" />
-            <mxPoint x="370" y="400" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-14" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Granular Synthesis Algorithm" vertex="1">
-          <mxGeometry height="60" width="120" x="200" y="400" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-15" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Variable Phase Vocoder Algorithm" vertex="1">
-          <mxGeometry height="60" width="120" x="200" y="320" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-18" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="413" y="210" as="sourcePoint" />
-            <mxPoint x="413" y="250" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-19" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="Pitch_Analysis Algorithm" vertex="1">
-          <mxGeometry height="80" width="80" x="530" y="140" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-22" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Distinguish Harmony H2MB - Tracker" vertex="1">
-          <mxGeometry height="60" width="120" x="354" y="150" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-23" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="7JE1k5dMQ-xVDfsQ_TVP-19" value="">
-          <mxGeometry height="50" relative="1" width="50" as="geometry">
-            <mxPoint x="480" y="180" as="sourcePoint" />
-            <mxPoint x="450" y="320" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-27" edge="1" parent="1" source="7JE1k5dMQ-xVDfsQ_TVP-5" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="7JE1k5dMQ-xVDfsQ_TVP-9" value="">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="410" y="310" as="sourcePoint" />
-            <mxPoint x="440" y="360" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-28" connectable="0" parent="7JE1k5dMQ-xVDfsQ_TVP-27" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="Stretched Time domain" vertex="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-31" edge="1" parent="1" source="7JE1k5dMQ-xVDfsQ_TVP-19" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="510" y="370" as="sourcePoint" />
-            <mxPoint x="500" y="530" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-32" connectable="0" parent="7JE1k5dMQ-xVDfsQ_TVP-31" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="Original Time domain" vertex="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-34" edge="1" parent="1" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" value="">
-          <mxGeometry relative="1" as="geometry">
-            <mxPoint x="413.5" y="460" as="sourcePoint" />
-            <mxPoint x="413.5" y="530" as="targetPoint" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-35" connectable="0" parent="7JE1k5dMQ-xVDfsQ_TVP-34" style="edgeLabel;resizable=0;html=1;;align=center;verticalAlign=middle;" value="Original Time domain" vertex="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-37" parent="1" style="rounded=0;whiteSpace=wrap;html=1;" value="Interface showing the feedback" vertex="1">
-          <mxGeometry height="60" width="120" x="390" y="540" as="geometry" />
-        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

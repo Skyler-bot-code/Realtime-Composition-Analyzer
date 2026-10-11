@@ -4,8 +4,14 @@
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="S5wem8K1ONvBrwTmuS2g-1" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="" vertex="1">
+        <mxCell id="S5wem8K1ONvBrwTmuS2g-1" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;" value="User input Audio (url)" vertex="1">
           <mxGeometry height="80" width="80" x="374" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="7JE1k5dMQ-xVDfsQ_TVP-1" edge="1" parent="1" source="S5wem8K1ONvBrwTmuS2g-1" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="390" y="350" as="sourcePoint" />
+            <mxPoint x="414" y="200" as="targetPoint" />
+          </mxGeometry>
         </mxCell>
       </root>
     </mxGraphModel>
